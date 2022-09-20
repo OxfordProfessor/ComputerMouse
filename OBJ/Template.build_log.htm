@@ -1,0 +1,75 @@
+<html>
+<body>
+<pre>
+<h1>礦ision Build Log</h1>
+<h2>Tool Versions:</h2>
+IDE-Version: μVision V5.37.0.0
+Copyright (C) 2022 ARM Ltd and ARM Germany GmbH. All rights reserved.
+License Information: Run Away, Xuchang univeristy, LIC=BL28G-VL7DI-AWH2F-6A6R1-59IMQ-FJG0Z
+ 
+Tool Versions:
+Toolchain:       MDK-ARM Professional  Version: 5.37.0.0
+Toolchain Path:  D:\Keil5\ARM\ARMCC\Bin
+C Compiler:      Armcc.exe V5.06 update 7 (build 960)
+Assembler:       Armasm.exe V5.06 update 7 (build 960)
+Linker/Locator:  ArmLink.exe V5.06 update 7 (build 960)
+Library Manager: ArmAr.exe V5.06 update 7 (build 960)
+Hex Converter:   FromElf.exe V5.06 update 7 (build 960)
+CPU DLL:         SARMCM3.DLL V5.37.0.0
+Dialog DLL:      DCM.DLL V1.17.5.0
+Target DLL:      STLink\ST-LINKIII-KEIL_SWO.dll V3.0.9.0
+Dialog DLL:      TCM.DLL V1.56.1.0
+ 
+<h2>Project:</h2>
+D:\UncompleteProgram\电脑鼠\USER\FreeRTOS.uvprojx
+Project File Date:  09/19/2022
+
+<h2>Output:</h2>
+*** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil5\ARM\ARMCC\Bin'
+Build target 'FreeRTOS'
+compiling train.c...
+..\HARDWARE\TRAIN\train.c(42): warning:  #223-D: function "malloc" declared implicitly
+  		(*L) = (LinkList)malloc(sizeof(Node));				//开辟空间
+..\HARDWARE\TRAIN\train.c(57): warning:  #223-D: function "malloc" declared implicitly
+  	(*L) = (LinkList)malloc(sizeof(Node));			
+..\HARDWARE\TRAIN\train.c(55): warning:  #177-D: variable "i"  was declared but never referenced
+  	int i, n;
+..\HARDWARE\TRAIN\train.c(55): warning:  #177-D: variable "n"  was declared but never referenced
+  	int i, n;
+..\HARDWARE\TRAIN\train.c(82): warning:  #1-D: last line of file ends without a newline
+  }
+..\HARDWARE\TRAIN\train.c(82): warning:  #940-D: missing return statement at end of non-void function "findpath" 
+  }
+..\HARDWARE\TRAIN\train.c(75): warning:  #177-D: variable "maze"  was declared but never referenced
+    int maze[100][100]; //记录走过路线的数组
+..\HARDWARE\TRAIN\train.c(77): warning:  #177-D: variable "x"  was declared but never referenced
+  	int x = 0,y = 0,di = 0;    //记录当前位置和方向
+..\HARDWARE\TRAIN\train.c(77): warning:  #177-D: variable "y"  was declared but never referenced
+  	int x = 0,y = 0,di = 0;    //记录当前位置和方向
+..\HARDWARE\TRAIN\train.c(77): warning:  #177-D: variable "di"  was declared but never referenced
+  	int x = 0,y = 0,di = 0;    //记录当前位置和方向
+..\HARDWARE\TRAIN\train.c(78): warning:  #177-D: variable "line"  was declared but never referenced
+  	int line = 0,col = 0;      //记录下次一点的位置坐标
+..\HARDWARE\TRAIN\train.c(78): warning:  #177-D: variable "col"  was declared but never referenced
+  	int line = 0,col = 0;      //记录下次一点的位置坐标
+..\HARDWARE\TRAIN\train.c: 12 warnings, 0 errors
+linking...
+Program Size: Code=25444 RO-data=488 RW-data=244 ZI-data=1045268  
+FromELF: creating hex file...
+"..\OBJ\Template.axf" - 0 Error(s), 12 Warning(s).
+
+<h2>Software Packages used:</h2>
+
+Package Vendor: Keil
+                http://www.keil.com/pack/Keil.STM32F4xx_DFP.2.16.0.pack
+                Keil.STM32F4xx_DFP.2.16.0
+                STMicroelectronics STM32F4 Series Device Support, Drivers and Examples
+
+<h2>Collection of Component include folders:</h2>
+  D:/Keil5/PACK/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include
+
+<h2>Collection of Component Files used:</h2>
+Build Time Elapsed:  00:00:01
+</pre>
+</body>
+</html>
