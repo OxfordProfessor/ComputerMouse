@@ -33,6 +33,8 @@ Section Cross References
     beep.o(.text) refers to stm32f4xx_gpio.o(.text) for GPIO_Init
     stmflash.o(.text) refers to stm32f4xx_flash.o(.text) for FLASH_Unlock
     train.o(.text) refers to malloc.o(i.malloc) for malloc
+    train.o(.text) refers to malloc.o(i.free) for free
+    train.o(.text) refers to train.o(.data) for .data
     delay.o(.text) refers to tasks.o(.text) for xTaskGetSchedulerState
     delay.o(.text) refers to port.o(.text) for xPortSysTickHandler
     delay.o(.text) refers to misc.o(.text) for SysTick_CLKSourceConfig
@@ -448,8 +450,8 @@ Removing Unused input sections from the image.
     Removing stmflash.o(.text), (324 bytes).
     Removing train.o(.rev16_text), (4 bytes).
     Removing train.o(.revsh_text), (4 bytes).
-    Removing train.o(.text), (102 bytes).
-    Removing train.o(.data), (32 bytes).
+    Removing train.o(.text), (344 bytes).
+    Removing train.o(.data), (36 bytes).
     Removing tract.o(.rev16_text), (4 bytes).
     Removing tract.o(.revsh_text), (4 bytes).
     Removing pwm.o(.rev16_text), (4 bytes).
@@ -512,7 +514,7 @@ Removing Unused input sections from the image.
     Removing heap_4.o(.rev16_text), (4 bytes).
     Removing heap_4.o(.revsh_text), (4 bytes).
 
-95 unused section(s) (total 7118 bytes) removed from the image.
+95 unused section(s) (total 7364 bytes) removed from the image.
 
 ==============================================================================
 
