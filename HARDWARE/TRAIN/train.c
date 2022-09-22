@@ -1,5 +1,6 @@
 #include "train.h"
 #include "malloc.h"
+#include "pwm.h"
 /*
   训练模式：迷宫探测
 */
@@ -87,16 +88,153 @@ Box POPList(LinkList *L)				//删除L中第i个元素，并用e返回其值
 	return *e;
 }
 
+/*
+  函数名称：动作函数
+  函数作用：执行相应的动作
+  输入参数：@para1:下一步方位状态，@para2:当前方位状态
+  输出参数：最短路径的链表信息
+*/
+
+void movement(Box *temp,Box *cur_tem_loc)
+{
+		if((*temp).x - (*cur_tem_loc).x == 0)            //下一步向y轴移动
+		{
+			if((*temp).y > (*cur_tem_loc).y)              //下一步坐标在下方
+			{
+				//本次方向是否对准下方？
+				if((*cur_tem_loc).di == 0)   //自身右转90
+				{
+					turn_right(90);
+				}
+				else if((*cur_tem_loc).di == 2)  //自身左转90
+				{
+					turn_left(90);
+				}
+				else if((*cur_tem_loc).di == 3)               //自身选择180
+				{
+					turn_left(180);
+				}
+				Go_Onestep(); 
+				//下一次方向是否正确？
+				if((*temp).di == 0)
+				{
+					turn_left(90);
+				}
+				else if((*temp).di == 2)
+				{
+					turn_right(90);
+				}
+				else if((*temp).di == 3)
+				{
+					turn_right(180);
+				}
+			}
+			else                                    //下一步坐标在上方
+			{
+				//本次方向是否对准上方？
+				if((*cur_tem_loc).di == 2)   //自身右转90
+				{
+					turn_right(90);
+				}
+				else if((*cur_tem_loc).di == 0)  //自身左转90
+				{
+					turn_left(90);
+				}
+				else if((*cur_tem_loc).di == 1)             //自身选择180
+				{
+					turn_left(180);
+				}
+				Go_Onestep();
+				//下一次方向是否正确？
+				if((*temp).di == 0)
+				{
+					turn_right(90);
+				}
+				else if((*temp).di == 2)
+				{
+					turn_left(90);
+				}
+				else if((*temp).di == 1)
+				{
+					turn_right(180);
+				}
+			}
+		}
+		if((*temp).y - (*cur_tem_loc).y == 0)            //下一步向y轴移动
+		{
+			if((*temp).x > (*cur_tem_loc).x)              //下一步坐标在左方
+			{
+				//本次方向是否对准左方？
+				if((*cur_tem_loc).di == 1)   //自身右转90
+				{
+					turn_right(90);
+				}
+				else if((*cur_tem_loc).di == 3)  //自身左转90
+				{
+					turn_left(90);
+				}
+				else if((*cur_tem_loc).di == 0)              //自旋转180
+				{
+					turn_left(180);
+				}
+				Go_Onestep();
+				//下一次方向是否正确？
+				if((*temp).di == 1)
+				{
+					turn_left(90);
+				}
+				else if((*temp).di == 3)
+				{
+					turn_right(90);
+				}
+				else if((*temp).di == 0)
+				{
+					turn_right(180);
+				}
+			}
+			else                                    //下一步坐标在上方
+			{
+				//本次方向是否对准右方？
+				if((*cur_tem_loc).di == 3)   //自身右转90
+				{
+					turn_right(90);
+				}
+				else if((*cur_tem_loc).di == 1)  //自身左转90
+				{
+					turn_left(90);
+				}
+				else if((*cur_tem_loc).di == 2)               //自身选择180
+				{
+					turn_left(180);
+				}
+			}
+			Go_Onestep();
+			//下一次方向是否正确？
+			if((*temp).di == 1)
+			{
+				turn_right(90);
+			}
+			else if((*temp).di == 3)
+			{
+				turn_left(90);
+			}
+			else if((*temp).di == 2)
+			{
+				turn_right(180);
+			}
+		}
+}
 
 /*
   函数名称：DFS算法训练函数
   函数作用：训练寻找最短迷宫路径
-  输入参数：道路阻塞信息
+  输入参数：道路阻塞信息，路径终点信息
   输出参数：最短路径的链表信息
 */
 _Bool findpath(void)
 {
-	Box temp;
+	Box temp;            //下一步动作状态
+	Box cur_tem_loc;    //暂存当前位置状态，用于前进方式判断
   int maze[100][100]; //记录走过路线的数组
 	LinkList L;    //用于存放路径的链表
 	int x = 0,y = 0,di = 0;    //记录当前位置和方向
@@ -107,19 +245,24 @@ _Bool findpath(void)
 	PUSHList(&L,&temp);   //将当前下一步方向数据写入链表
 	while(1)
 	{
+		cur_tem_loc = temp;
 		temp = POPList(&L);   //弹出链表中的最后一个元素
-		x = temp.x, y = temp.y, di=temp.di+1;
+		//电脑鼠动作（走到相应坐标）
+		movement(&temp,&cur_tem_loc);  //动作执行函数
+		x = temp.x, y = temp.y, di=temp.di+1;   //更新当前位置信息
 		while(di<4)
 		{
 			line = x + direct[di].cx;
 			col = y + direct[di].cy;
 			if(maze[line][col] == 0 && block_flag == 0) //前方格子没有走过，且前方没有阻塞
 			{
-				temp.x = x, temp.y = y, temp.di = di;
+				temp.x = x, temp.y = y, temp.di = di;   //当前位置状态写入链表
 				PUSHList(&L,&temp);
-				x = line;
+				x = line;       //尝试新的坐标点
 				y = col;
-				maze[line][col] = -1;
+				maze[line][col] = -1; //记录该坐标点已走过
+				cur_tem_loc.x = x, cur_tem_loc.y = y,cur_tem_loc.di = di;   //预存本次位置位置信息
+				movement(&cur_tem_loc,&temp);    //动作执行函数,让电老鼠走向这个新的点
 				if(terminal_flag == 1)       //找到终点
 				{
 					temp.x = x, temp.y = y, temp.di = di;
@@ -131,7 +274,16 @@ _Bool findpath(void)
 					di = 0;
 				}
 			}
+			else
+			{
+				di++;
+			}
 		}
 	}
 	return 0;
+}
+
+void fskl()
+{
+	while(!findpath());   //找到路径后跳出
 }

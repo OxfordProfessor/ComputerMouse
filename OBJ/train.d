@@ -37,3 +37,4 @@
 ..\obj\train.o: ..\FWLIB\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_dcmi.h
 ..\obj\train.o: ..\FWLIB\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fsmc.h
 ..\obj\train.o: ..\MALLOC\malloc.h
+..\obj\train.o: ..\HARDWARE\PWM\pwm.h

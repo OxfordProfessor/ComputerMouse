@@ -2,12 +2,16 @@
 #include "led.h"
 #include "usart.h"
 
-
+#define M 2
 #define FFT_LENGTH      128				// FFT长度，默认是1024点FFT
 //FreeRTOS时间统计所用的节拍计数器
 volatile unsigned long long FreeRTOSRunTimeTicks;
 extern __IO uint16_t ADCConvertedVault[FFT_LENGTH];    //DMA转换结果存放（采样序列）
 extern float afterfilter_ADC[FFT_LENGTH];  //存放滤波后的ADC数据
+
+extern _Bool terminal_flag;   //到达终点标志
+extern _Bool block_flag;      //道路阻塞标志
+extern volatile float AD_Value[M];
 
 //初始化TIM3使其为FreeRTOS的时间统计提供时基
 void ConfigureTimeForRunTimeStats(void)
@@ -54,6 +58,22 @@ void TIM5_IRQHandler(void)
 	if(TIM_GetITStatus(TIM5,TIM_IT_Update)==SET) //溢出中断
 	{
 		FreeRTOSRunTimeTicks++;
+		if(AD_Value[0] < 1000)
+		{
+			block_flag = 1;
+		}
+		else
+		{
+			block_flag = 0;
+		}
+		if(AD_Value[1] > 2000)
+		{
+			terminal_flag = 1;
+		}
+		else
+		{
+			terminal_flag = 0;
+		}
 	}
 	TIM_ClearITPendingBit(TIM5,TIM_IT_Update);  //清除中断标志位
 }
