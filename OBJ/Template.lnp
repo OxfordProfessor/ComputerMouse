@@ -10,7 +10,6 @@
 "..\obj\sensor.o"
 "..\obj\stmflash.o"
 "..\obj\train.o"
-"..\obj\tract.o"
 "..\obj\pwm.o"
 "..\obj\delay.o"
 "..\obj\sys.o"

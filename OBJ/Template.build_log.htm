@@ -22,33 +22,41 @@ Dialog DLL:      TCM.DLL V1.56.1.0
  
 <h2>Project:</h2>
 D:\UncompleteProgram\电脑鼠\USER\FreeRTOS.uvprojx
-Project File Date:  09/19/2022
+Project File Date:  09/23/2022
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 7 (build 960)', folder: 'D:\Keil5\ARM\ARMCC\Bin'
 Build target 'FreeRTOS'
 compiling train.c...
-..\HARDWARE\TRAIN\train.c(45): warning:  #223-D: function "malloc" declared implicitly
+..\HARDWARE\TRAIN\train.c(49): warning:  #223-D: function "malloc" declared implicitly
   		(*L) = (LinkList)malloc(sizeof(Node));				//开辟空间
-..\HARDWARE\TRAIN\train.c(60): warning:  #223-D: function "malloc" declared implicitly
+..\HARDWARE\TRAIN\train.c(64): warning:  #223-D: function "malloc" declared implicitly
   	(*L) = (LinkList)malloc(sizeof(Node));			
-..\HARDWARE\TRAIN\train.c(58): warning:  #177-D: variable "i"  was declared but never referenced
+..\HARDWARE\TRAIN\train.c(62): warning:  #177-D: variable "i"  was declared but never referenced
   	int i, n;
-..\HARDWARE\TRAIN\train.c(58): warning:  #177-D: variable "n"  was declared but never referenced
+..\HARDWARE\TRAIN\train.c(62): warning:  #177-D: variable "n"  was declared but never referenced
   	int i, n;
-..\HARDWARE\TRAIN\train.c(87): warning:  #223-D: function "free" declared implicitly
+..\HARDWARE\TRAIN\train.c(91): warning:  #223-D: function "free" declared implicitly
   	free(q);										//释放q节点
-..\HARDWARE\TRAIN\train.c(78): warning:  #177-D: variable "j"  was declared but never referenced
+..\HARDWARE\TRAIN\train.c(82): warning:  #177-D: variable "j"  was declared but never referenced
   	int j = 1;
-..\HARDWARE\TRAIN\train.c(283): warning:  #111-D: statement is unreachable
+..\HARDWARE\TRAIN\train.c(305): warning:  #111-D: statement is unreachable
   	return 0;
-..\HARDWARE\TRAIN\train.c(289): warning:  #1-D: last line of file ends without a newline
+..\HARDWARE\TRAIN\train.c(371): warning:  #1-D: last line of file ends without a newline
   }
-..\HARDWARE\TRAIN\train.c: 8 warnings, 0 errors
+..\HARDWARE\TRAIN\train.c(355): warning: C4487E: read from variable 'temp' with offset out of bounds
+}
+..\HARDWARE\TRAIN\train.c(355): warning: C4487E: read from variable 'temp' with offset out of bounds
+}
+..\HARDWARE\TRAIN\train.c(355): warning: C4487E: read from variable 'temp' with offset out of bounds
+}
+..\HARDWARE\TRAIN\train.c(355): warning: C4488E: write to variable 'data' with offset out of bounds
+}
+..\HARDWARE\TRAIN\train.c: 12 warnings, 0 errors
 linking...
-Program Size: Code=25516 RO-data=488 RW-data=288 ZI-data=1045272  
+Program Size: Code=25256 RO-data=488 RW-data=268 ZI-data=1045268  
 FromELF: creating hex file...
-"..\OBJ\Template.axf" - 0 Error(s), 8 Warning(s).
+"..\OBJ\Template.axf" - 0 Error(s), 12 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -61,7 +69,7 @@ Package Vendor: Keil
   D:/Keil5/PACK/Keil/STM32F4xx_DFP/2.16.0/Drivers/CMSIS/Device/ST/STM32F4xx/Include
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>
