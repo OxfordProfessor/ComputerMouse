@@ -39,3 +39,4 @@
 ..\obj\timer.o: ..\HARDWARE\LED\led.h
 ..\obj\timer.o: ..\SYSTEM\usart\usart.h
 ..\obj\timer.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\timer.o: ..\HARDWARE\PWM\pwm.h

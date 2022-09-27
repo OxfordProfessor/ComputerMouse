@@ -58,3 +58,6 @@
 ..\obj\main.o: ..\HARDWARE\BEEP\beep.h
 ..\obj\main.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
 ..\obj\main.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h
+..\obj\main.o: ..\HARDWARE\TRAIN\train.h
+..\obj\main.o: ..\HARDWARE\OLEDSPI\OLED.h
+..\obj\main.o: ..\HARDWARE\PWM\pwm.h

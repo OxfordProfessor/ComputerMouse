@@ -6,33 +6,14 @@
 
 #define Start_Address  0x0000FF    //路线信息存放的flash初始地址
 /*
-  训练模式：迷宫探测
+  训练模式：迷宫探测，并将路线存入链表，再将链表写入flash，需要时从flash中读取数据
+	再次存储链表，防止路线信息掉电即失去
 */
 
 _Bool terminal_flag;   //到达终点标志
 _Bool block_flag;      //道路阻塞标志
-//用来记录走迷宫顺序的结构体
-typedef struct {
-	//int cx,int cy表示x和y方向的增量
-	//cy+1:表示向右走  cy-1:向左走
-	//cx+1:表示向下走  cx-1:向上走
-	int cx, cy;
-}Direction;
-//数组中方向存储顺序：右下左上
+
 Direction direct[4] = { {0,1},{1,0},{0,-1},{-1,0} };
-
-//用来记录当前位置，然后压入栈中
-typedef struct {
-	int x, y;//记录当前位置的坐标
-	int di;//记录当前位置下一次移动的方向
-}Box;
-
-typedef struct Node								//定义一个结构体
-{
-  Box data;
-	struct Node *next;
-}Node;
-typedef struct Node *LinkList;
 LinkList L;    //用于存放路径的链表
 
 /*
@@ -325,7 +306,7 @@ void tract_storage(LinkList *L)
 		{
 			memcpy(&temp,&(p->data)+s,1);            //从链表中数据结构体所在内存中拷贝一个byte
 		}
-		STMFLASH_Write(Start_Address+4*i*sizeof(p->data),(u32*)temp,sizeof(p->data)/4+((sizeof(p->data)%4)?1:0));         //数据写入flash
+		STMFLASH_Write(Start_Address+4+i*sizeof(p->data),(u32*)temp,sizeof(p->data)/4+((sizeof(p->data)%4)?1:0));         //数据写入flash
 		p = p->next;     //指向下一位元素
 	}
 	count =  (sizeof(p->data)/4+((sizeof(p->data)%4)?1:0))*LengthList(L);
@@ -334,9 +315,9 @@ void tract_storage(LinkList *L)
 
 /*
   函数名称：路线遍历函数
-  函数作用：读取flash中存储的路线信息到链表，并执行相应动作
+  函数作用：读取flash中存储的路线信息到链表
   输入参数：无
-  输出参数：相应动作函数																																				
+  输出参数：向链表中写入数据																																			
 */
 void tract_follow()
 {
@@ -348,11 +329,32 @@ void tract_follow()
 	InitList(&L);  //创建一个链表
 	for(s = 0; s < count/4 ; s++)
 	{
-		STMFLASH_Read(Start_Address+16*s,(u32*)temp,4);		 //根据地址依次取出一个链表中的结构体
+		STMFLASH_Read(Start_Address+4+s*16,(u32*)temp,4);		 //根据地址依次取出一个链表中的结构体
 		memcpy(&data,&temp,16);            //从取出的数据放入data中
 		PUSHList(&L,&data);   //将flash数据写入链表     
 	}	
 }
+
+/*
+  函数名称：路线遍历函数
+  函数作用：读取链表信息，并执行相应动作
+  输入参数：无
+  输出参数：相应动作函数																																				
+*/
+
+void Traverse_List(LinkList *L)					//打印整个链表
+{
+	LinkList p;
+	Box temp;
+	p = (*L)->next;
+	while (p)
+	{
+		movement(&((*L)->data),&temp);   //下一步走向
+		p = p->next;
+		temp = (*L)->data;         //存储本次的位置
+	}
+}
+
 /*
   函数名称：路线清除函数
   函数作用：删除现有的flash中存储的路线信息
@@ -365,7 +367,3 @@ void tract_delect()
 	STMFLASH_Write(Start_Address,&temp,1000);         //数据0写入flash,清0
 }
 
-void fskl()
-{
-	while(!findpath());   //找到路径后跳出
-}

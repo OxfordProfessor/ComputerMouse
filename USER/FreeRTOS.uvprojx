@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>STM32F40_41xxx,USE_STDPERIPH_DRIVER,__FPU_PRESENT = 1,__FPU_USED=1,ARM_MATH_CM4,__CC_ARM</Define>
               <Undefine></Undefine>
-              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\FWLIB\STM32F4xx_StdPeriph_Driver\inc;..\USER;..\HARDWARE\LED;..\MALLOC;..\FreeRTOS\include;..\FreeRTOS\portable\RVDS\ARM_CM4F;..\FWLIB\CMSIS\Include;..\EMWIN\STemWin\Config;..\EMWIN\STemWin\inc;..\EMWIN\Demo;..\NET\cJSON;..\NET\ESP8266;..\NET\Protocol;..\NET\Serve;..\NET;..\FAFTS\sd;..\FAFTS\src\option;..\FAFTS\exfuns;..\FAFTS\src;..\FWLIB\CMSIS\Include;..\FWLIB\CMSIS;..\HARDWARE\KEY;..\HARDWARE\TIMER;..\HARDWARE\SRAM;..\HARDWARE\BEEP;..\HARDWARE\STMFLASH;..\HARDWARE\SENSOR;..\HARDWARE\TRAIN;..\HARDWARE\PWM</IncludePath>
+              <IncludePath>..\CORE;..\SYSTEM\delay;..\SYSTEM\sys;..\SYSTEM\usart;..\FWLIB\STM32F4xx_StdPeriph_Driver\inc;..\USER;..\HARDWARE\LED;..\MALLOC;..\FreeRTOS\include;..\FreeRTOS\portable\RVDS\ARM_CM4F;..\FWLIB\CMSIS\Include;..\EMWIN\STemWin\Config;..\EMWIN\STemWin\inc;..\EMWIN\Demo;..\NET\cJSON;..\NET\ESP8266;..\NET\Protocol;..\NET\Serve;..\NET;..\FAFTS\sd;..\FAFTS\src\option;..\FAFTS\exfuns;..\FAFTS\src;..\FWLIB\CMSIS\Include;..\FWLIB\CMSIS;..\HARDWARE\KEY;..\HARDWARE\TIMER;..\HARDWARE\SRAM;..\HARDWARE\BEEP;..\HARDWARE\STMFLASH;..\HARDWARE\SENSOR;..\HARDWARE\TRAIN;..\HARDWARE\PWM;..\HARDWARE\OLEDSPI</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -448,6 +448,11 @@
               <FileName>pwm.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\HARDWARE\PWM\pwm.c</FilePath>
+            </File>
+            <File>
+              <FileName>OLED.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\HARDWARE\OLEDSPI\OLED.c</FilePath>
             </File>
           </Files>
         </Group>

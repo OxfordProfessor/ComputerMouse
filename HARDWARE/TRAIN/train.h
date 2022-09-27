@@ -2,17 +2,36 @@
 #define _TRAIN_H
 #include "sys.h"
 
-typedef struct 
+//ÓÃÀ´¼ÇÂ¼×ßÃÔ¹¬Ë³ĞòµÄ½á¹¹Ìå
+typedef struct {
+	//int cx,int cy±íÊ¾xºÍy·½ÏòµÄÔöÁ¿
+	//cy+1:±íÊ¾ÏòÓÒ×ß  cy-1:Ïò×ó×ß
+	//cx+1:±íÊ¾ÏòÏÂ×ß  cx-1:ÏòÉÏ×ß
+	int cx, cy;
+}Direction;
+//Êı×éÖĞ·½Ïò´æ´¢Ë³Ğò£ºÓÒÏÂ×óÉÏ
+
+//ÓÃÀ´¼ÇÂ¼µ±Ç°Î»ÖÃ£¬È»ºóÑ¹ÈëÕ»ÖĞ
+typedef struct {
+	int x, y;//¼ÇÂ¼µ±Ç°Î»ÖÃµÄ×ø±ê
+	int di;//¼ÇÂ¼µ±Ç°Î»ÖÃÏÂÒ»´ÎÒÆ¶¯µÄ·½Ïò
+}Box;
+typedef struct Node								//¶¨ÒåÒ»¸ö½á¹¹Ìå
 {
-    float LastP;//ï¿½Ï´Î¹ï¿½ï¿½ï¿½Ğ­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ê¼ï¿½ï¿½ÖµÎª0.02
-    float Now_P;//ï¿½ï¿½Ç°ï¿½ï¿½ï¿½ï¿½Ğ­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ê¼ï¿½ï¿½ÖµÎª0
-    float out;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë²ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ê¼ï¿½ï¿½ÖµÎª0
-    float Kg;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ê¼ï¿½ï¿½ÖµÎª0
-    float Q;//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ğ­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ê¼ï¿½ï¿½ÖµÎª0.001
-    float R;//ï¿½Û²ï¿½ï¿½ï¿½ï¿½ï¿½Ğ­ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ê¼ï¿½ï¿½ÖµÎª0.543
-}KFP;//Kalman Filter parameter
-float kalmanFilter(KFP *kfp,float input);
-void KFP_init(float LastP, float Now_P, float out, float Kg, float Q, float R, KFP* KFP);
-void distortion_calculation(void);
+  Box data;
+	struct Node *next;
+}Node;
+typedef struct Node *LinkList;
+
+int InitList(LinkList *L);
+void PUSHList(LinkList *L,Box *D);
+Box POPList(LinkList *L);
+int LengthList(LinkList *L);
+void movement(Box *temp,Box *cur_tem_loc);
+_Bool findpath(void);
+void tract_storage(LinkList *L);
+void Traverse_List(LinkList *L);
+void tract_follow(void);
+void tract_delect(void);
 
 #endif

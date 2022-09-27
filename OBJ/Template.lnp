@@ -11,6 +11,7 @@
 "..\obj\stmflash.o"
 "..\obj\train.o"
 "..\obj\pwm.o"
+"..\obj\oled.o"
 "..\obj\delay.o"
 "..\obj\sys.o"
 "..\obj\usart.o"
