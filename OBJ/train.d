@@ -40,3 +40,4 @@
 ..\obj\train.o: ..\HARDWARE\PWM\pwm.h
 ..\obj\train.o: ..\HARDWARE\STMFLASH\stmflash.h
 ..\obj\train.o: D:\Keil5\ARM\ARMCC\Bin\..\include\string.h
+..\obj\train.o: D:\Keil5\ARM\ARMCC\Bin\..\include\stdlib.h

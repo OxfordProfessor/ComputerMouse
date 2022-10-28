@@ -17,6 +17,7 @@
 #include "train.h"
 #include "OLED.h"
 #include "pwm.h"
+#include "sensor.h"
 
 //任务优先级
 #define START_TASK_PRIO			1
@@ -27,16 +28,6 @@ TaskHandle_t StartTask_Handler;
 //任务函数
 void start_task(void *pvParameters);
 
-
-//LED0任务
-//设置任务优先级
-#define LED0_TASK_PRIO 			1
-//任务堆栈大小
-#define LED0_STK_SIZE			128
-//任务句柄
-TaskHandle_t Led0Task_Handler;
-//led0任务
-void led0_task(void *pvParameters);
 
 //主任务
 //设置任务优先级
@@ -49,6 +40,7 @@ TaskHandle_t MAINTask_Handler;
 void main_task(void *pvParameters);
 
 extern LinkList L;    //用于存放路径的链表
+extern volatile float AD_Value[M];
 
 int main(void)
 {
@@ -59,8 +51,6 @@ int main(void)
 	LED_Init();   			//LED初始化
 	FSMC_SRAM_Init(); 		//SRAM初始化	
 	mem_init(SRAMIN); 		//内部RAM初始化
-	mem_init(SRAMEX); 		//外部RAM初始化
-	mem_init(SRAMCCM);		//CCM初始化
 	UsartPrintf(USART_DEBUG, " Hardware init OK\r\n");
 	BEEP = 1;//鸣叫提示接入成功
 	delay_ms(250);
@@ -79,13 +69,6 @@ int main(void)
 void start_task(void *pvParameters)
 {
     taskENTER_CRITICAL();           //进入临界区	
-    //创建LED0任务
-    xTaskCreate((TaskFunction_t )led0_task,             
-                (const char*    )"led0_task",           
-                (uint16_t       )LED0_STK_SIZE,        
-                (void*          )NULL,                  
-                (UBaseType_t    )LED0_TASK_PRIO,        
-                (TaskHandle_t*  )&Led0Task_Handler);  
     //创建主任务
     xTaskCreate((TaskFunction_t )main_task,            //任务函数
                 (const char*    )"main_task",          //任务名称
@@ -98,40 +81,31 @@ void start_task(void *pvParameters)
     taskEXIT_CRITICAL();            	//退出临界区
 }
 
-//LED0任务
-void led0_task(void *p_arg)
-{
-	while(1)
-	{
-		LED3 = !LED3;
-		vTaskDelay(500);		//延时500ms
-	}
-}
 
 void main_task(void *p_arg)
 {
 	u8 key;           		 //保存键值
 	while(1)
 	{
- re:ShowStr(0,1,"1.Debug");
-		ShowStr(2,1,"2.训练模式");
-		ShowStr(4,1,"3.main");
-		ShowStr(4,1,"4.测试内存");
-		key=KEY_Scan(0);		//得到键值
-		if(key)
-		{						   
-			switch(key)
-			{				 
-				case KEY0_PRES:		//Debug模式	
-					ClearScreen();    //清屏
-				  while(1)
-					{
+		re:	ClearScreen();    //清屏
+			  ShowStr(0,1,"1.Debug");
+				ShowStr(2,1,"2.训练模式");
+				ShowStr(4,1,"3.main");
+				ShowStr(4,1,"4.测试内存");
+				key=KEY_Scan(0);		//得到键值
+				if(key)
+				{						   
+					switch(key)
+					{				 
+						case KEY0_PRES:		//Debug模式	
+							ClearScreen();    //清屏
 							ShowStr(0,1,"1.测试步长");
 							ShowStr(2,1,"2.左转90");
 							ShowStr(4,1,"3.右转90");
-						  ShowStr(6,1,"返回");
+							ShowStr(6,1,"返回");
+						  key = 0;
 							key = KEY_Scan(0);
-						 	if(key)
+							if(key)
 							{						   
 								switch(key)
 								{	
@@ -146,29 +120,31 @@ void main_task(void *p_arg)
 									break;
 									case WKUP_PRES:		
 										goto re;
-									break;
 								}
 							}
-					}
-				break;
-				case KEY1_PRES:		//训练模式
-					while(!findpath());   //找到路径后跳出
-				  tract_storage(&L);    //路线存入flash
-					LED1 = ~LED1;       //灯变亮，说明最短路径已经找到并存入flash;
-				break;
-				case KEY2_PRES:		//主程序模式
-					tract_follow();      //取出路线，放入链表
-				  Traverse_List(&L);   //遍历链表，按照路线执行动作
-				break;	
-				case WKUP_PRES:
-					printf("the size of p->data is %d",sizeof(L->data));
-				break;
+						break;
+						case KEY1_PRES:		//训练模式
+							while(!findpath());   //找到路径后跳出
+							tract_storage(&L);    //路线存入flash
+							LED1 = ~LED1;       //灯变亮，说明最短路径已经找到并存入flash;
+						break;
+						case KEY2_PRES:		//主程序模式
+							tract_follow();      //取出路线，放入链表
+							Traverse_List(&L);   //遍历链表，按照路线执行动作
+						break;	
+						case WKUP_PRES:
+							OLED_ShowNum(0,1,AD_Value[0],4);
+							OLED_ShowNum(2,1,AD_Value[1],4);
+							printf("the size of p->data is %d",sizeof(L->data));
+							ShowStr(6,1,"Push to 返回");
+						  key = 0;
+						  key = KEY_Scan(0);
+						  if(key)
+							{
+									goto re;
+							}
+						break;
+				}
 			}
-		}
-		else
-		{
-			 vTaskDelay(10); 
-		}
 	}
 }
-

@@ -4,7 +4,6 @@
   红外测距传感器初始化设置文件
 */
 
-#define  M    2
 volatile float AD_Value[M];
 
 void ADC_init()

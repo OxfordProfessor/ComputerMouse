@@ -3,6 +3,7 @@
 #include "pwm.h"
 #include "stmflash.h"
 #include "string.h"
+#include <stdlib.h>
 
 #define Start_Address  0x0000FF    //路线信息存放的flash初始地址
 /*
@@ -40,7 +41,6 @@ int InitList(LinkList *L)							//带有头节点的单链表的初始化
 */
 void PUSHList(LinkList *L,Box *D)			//头插法创建一个单链表
 {
-	int i, n;
 	LinkList p;										//声明一个指针p
 	(*L) = (LinkList)malloc(sizeof(Node));			
 	(*L)->next = NULL;								//先建立一个带头节点的空链表
@@ -60,7 +60,6 @@ Box POPList(LinkList *L)				//删除L中第i个元素，并用e返回其值
 {
 	LinkList p, q;
 	Box *e;
-	int j = 1;
 	p = *L;
 	while(p->next != NULL) 		//遍历寻找尾部
 	{
@@ -239,10 +238,11 @@ _Bool findpath(void)
 {
 	Box temp;            //下一步动作状态
 	Box cur_tem_loc;    //暂存当前位置状态，用于前进方式判断
-  int maze[100][100]; //记录走过路线的数组
+  int **maze; //记录走过路线的数组
 	int x = 0,y = 0,di = 0;    //记录当前位置和方向
 	int line = 0,col = 0;      //记录下次一点的位置坐标
 	temp.x = 1,temp.y = 1,temp.di = -1;   //记录当前位置，将di设置为1
+	maze = mymalloc(SRAMIN,19500*2);   //为迷宫数组申请存储空间，接近最大len*2
 	maze[1][1] = -1;    //一开始点位于maze[1][1]的位置，所以将该点变为-1，说明该点已走，不可再次通行
 	InitList(&L);  //创建一个链表
 	PUSHList(&L,&temp);   //将当前下一步方向数据写入链表
@@ -283,7 +283,6 @@ _Bool findpath(void)
 			}
 		}
 	}
-	return 0;
 }
 
 /*
@@ -331,7 +330,8 @@ void tract_follow()
 	{
 		STMFLASH_Read(Start_Address+4+s*16,(u32*)temp,4);		 //根据地址依次取出一个链表中的结构体
 		memcpy(&data,&temp,16);            //从取出的数据放入data中
-		PUSHList(&L,&data);   //将flash数据写入链表     
+		PUSHList(&L,&data);   //将flash数据写入链表
+		temp = 0;
 	}	
 }
 
